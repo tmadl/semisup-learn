@@ -58,7 +58,7 @@ class CPLELearningModel(BaseEstimator):
         Setting this to False allows the use of base classifiers which do not
         support sample weights (but might slow down the optimization)
 
-    max_iter : int, optional (default=200)
+    max_iter : int, optional (default=3000)
         Maximum number of iterations
         
     verbose : int, optional (default=0)
