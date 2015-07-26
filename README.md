@@ -4,14 +4,27 @@ Semi-supervised learning frameworks for Python
 This project contains Python implementations for semi-supervised
 learning, made compatible with scikit-learn, including
 
-- **Self learning** (self training), a naive semi-supervised learning framework applicable for any classifier
-
 - **Contrastive Pessimistic Likelihood Estimation (CPLE)** (based on - but not equivalent to - [Loog, 2015](http://arxiv.org/abs/1503.00269)), a `safe' framework applicable for all classifiers which can yield prediction probabilities
 (safe here means that the model trained on both labelled and unlabelled data should not be worse than models trained only on the labelled data)
 
-- **Semi-Supervised Support Vector Machine (S3VM)** - a simple scikit-learn compatible wrapper for the QN-S3VM code developed by 
+- Self learning (self training), a naive semi-supervised learning framework applicable for any classifier
+
+- Semi-Supervised Support Vector Machine (S3VM) - a simple scikit-learn compatible wrapper for the QN-S3VM code developed by 
 Fabian Gieseke, Antti Airola, Tapio Pahikkala, Oliver Kramer (see http://www.fabiangieseke.de/index.php/code/qns3vm ) 
 This method was included for comparison
+
+The first method is a novel extension of [Loog, 2015](http://arxiv.org/abs/1503.00269) for any discriminative classifier (the differences to the original CPLE are explained below). The last two methods are only included for comparison. 
+
+ 
+The advantages of the CPLE framework compared to other semi-supervised learning approaches include  
+
+- it is a **generally applicable framework (works with most scikit-learn classifiers)**
+
+- it needs low memory (as opposed to e.g. Label Spreading which needs O(n^2)), and 
+
+- it makes no additional assumptions except for the ones made by the choice of classifier 
+
+The main disadvantage is high computational complexity.
 
 Examples
 ===============
@@ -19,8 +32,8 @@ Examples
 Two-class classification examples with 56 unlabelled (small circles in the plot) and 4 labelled (large circles in the plot) data points. 
 Plot titles show classification accuracies (percentage of data points correctly classified by the model)
 
-In the second example, the state-of-the-art S3VM performs worse than the purely supervised SVM, while the CPLE SVM (by means of the 
-pessimistic assumption) provides a slight increase in accuracy.
+In the second example, **the state-of-the-art S3VM performs worse than the purely supervised SVM**, while the CPLE SVM (by means of the 
+pessimistic assumption) provides increased accuracy.
 
 Quadratic Discriminant Analysis (from left to right: supervised QDA, Self learning QDA, pessimistic CPLE QDA) 
 ![Comparison of supervised QDA with CPLE QDA](qdaexample.png)
@@ -35,7 +48,7 @@ Motivation
 ===============
 
 Current semi-supervised learning approaches require strong assumptions, and perform badly if those 
-assumptions are violated (e.g. low density assumption, clustering assumption). Furthermore, the vast majority require O(N^2) memory.  
+assumptions are violated (e.g. low density assumption, clustering assumption). In some cases, they can perform worse than a supervised classifier trained only on the labeled exampels. Furthermore, the vast majority require O(N^2) memory.  
 
 [(Loog, 2015)](http://arxiv.org/abs/1503.00269) has suggested an elegant framework (called Contrastive Pessimistic Likelihood Estimation / CPLE) which 
 **only uses assumptions intrinsic to the chosen classifier**, and thus allows choosing likelihood-based classifiers which fit the domain / data 
@@ -61,10 +74,4 @@ of the DL over the labelled data.
 
 ![CPLE Equation](alg1.png)
 
-The resulting semi-supervised learning framework is highly computationally expensive, but has the following advantages:
-
-- it is a generally applicable framework (works with most scikit-learn classifiers)
-
-- it needs low memory (as opposed to e.g. Label Spreading which needs O(n^2)), and 
-
-- it makes no additional assumptions except for the ones made by the choice of classifier 
+The resulting semi-supervised learning framework is highly computationally expensive, but has the advantages of being a generally applicable framework, needing low memory, and making no additional assumptions except for the ones made by the choice of classifier 
