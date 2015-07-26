@@ -1,7 +1,7 @@
 Semi-supervised learning frameworks for Python
 ===============
 
-This project contains a number of basic Python implementations for semi-supervised
+This project contains Python implementations for semi-supervised
 learning, made compatible with scikit-learn, including
 
 - **Self learning** (self training), a naive semi-supervised learning framework applicable for any classifier
@@ -22,13 +22,13 @@ Plot titles show classification accuracies (percentage of data points correctly 
 In the second example, the state-of-the-art S3VM performs worse than the purely supervised SVM, while the CPLE SVM (by means of the 
 pessimistic assumption) provides a slight increase in accuracy.
 
-Quadratic Discriminant Analysis (from left to right: supervised QDA, pessimistic CPLE QDA, optimistic CPLE QDA) 
+Quadratic Discriminant Analysis (from left to right: supervised QDA, Self learning QDA, pessimistic CPLE QDA) 
 ![Comparison of supervised QDA with CPLE QDA](qdaexample.png)
 
-Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), optimistic CPLE QDA)
+Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), pessimistic CPLE QDA)
 ![Comparison of supervised SVM, S3VM, and CPLE SVM](svmexample1.png)
  
-Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), optimistic CPLE QDA)
+Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), pessimistic CPLE QDA)
 ![Comparison of supervised SVM, S3VM, and CPLE SVM](svmexample2.png)
 
 Motivation
