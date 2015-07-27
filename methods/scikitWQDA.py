@@ -2,6 +2,7 @@ import traceback
 import numpy
 import numpy as np
 from sklearn.base import BaseEstimator
+import sklearn.metrics
 import scipy.stats
 
 class WQDA(BaseEstimator):
@@ -144,6 +145,9 @@ class WQDA(BaseEstimator):
 			Posterior probabilities of classification per class.
 		"""
 		return self._posterior(X)
+	
+	def score(self, X, y, sample_weight=None):
+		return sklearn.metrics.accuracy_score(y, self.predict(X), sample_weight=sample_weight)
 	
 def weighted_oas(X, weights):
 	"""Estimate covariance with the Oracle Approximating Shrinkage algorithm.

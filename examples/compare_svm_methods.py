@@ -69,10 +69,7 @@ for i in range(4):
     pred = model.predict(Xs)
     
     acc = np.mean(pred==ytrue)
-    P = model.predict_proba(Xs)
-    probacc = np.mean((P[:, 0]<np.average(P[:, 0]))==ytrue)
     print "accuracy:", round(acc, 3)
-    print "prob.accuracy (avg. threshold):", round(probacc, 3)
     
     # plot probabilities
     [minx, maxx] = [np.min(Xs[:, 0]), np.max(Xs[:, 0])]
@@ -99,7 +96,7 @@ for i in range(4):
     P = pred
     plt.scatter(Xs[:, 0], Xs[:,1], c=ytrue, s=(ys>-1)*300+100, linewidth=1, edgecolor=[cols[p]*P[p] for p in model.predict(Xs).astype(int)], cmap='hot')
     plt.scatter(Xs[ys>-1, 0], Xs[ys>-1,1], c=ytrue[ys>-1], s=300, linewidth=1, edgecolor=[cols[p]*P[p] for p in model.predict(Xs).astype(int)], cmap='hot')
-    plt.title(lbl + str(round(probacc if i>1 else acc, 2)))
+    plt.title(lbl + str(round(acc, 2)))
     plt.hold(False)
     
 plt.show(block=True)

@@ -61,13 +61,13 @@ class CPLELearningModel(BaseEstimator):
     max_iter : int, optional (default=3000)
         Maximum number of iterations
         
-    verbose : int, optional (default=0)
+    verbose : int, optional (default=1)
         Enable verbose output (1 shows progress, 2 shows the detailed log 
         likelihood at every iteration).
 
     """
     
-    def __init__(self, basemodel, pessimistic=True, use_sample_weighting = True, max_iter=3000, verbose = 0):
+    def __init__(self, basemodel, pessimistic=True, use_sample_weighting = True, max_iter=3000, verbose = 1):
         self.model = basemodel
         self.pessimistic = pessimistic
         self.use_sample_weighting = use_sample_weighting
@@ -197,7 +197,7 @@ class CPLELearningModel(BaseEstimator):
         else:
             self.model.fit(numpy.vstack((labeledX, unlabeledX)), labels)
         
-        if self.verbose:
+        if self.verbose > 1:
             print "number of non-one soft labels: ", numpy.sum(self.bestsoftlbl != 1), ", balance:", numpy.sum(self.bestsoftlbl<0.5), " / ", len(self.bestsoftlbl)
             print "current likelihood: ", ll
         
@@ -246,7 +246,8 @@ class CPLELearningModel(BaseEstimator):
             Class labels for samples in X.
         """
         
-        return self.model.predict(X)
+        P = self.predict_proba(X)
+        return (P[:, 0]<numpy.average(P[:, 0]))
     
     def score(self, X, y, sample_weight=None):
         return sklearn.metrics.accuracy_score(y, self.predict(X), sample_weight=sample_weight)

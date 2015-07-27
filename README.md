@@ -26,7 +26,41 @@ The advantages of the CPLE framework compared to other semi-supervised learning 
 
 The main disadvantage is high computational complexity.
 
+Usage
+===============
+
 The project requires [scikit-learn](http://scikit-learn.org/stable/install.html), [matplotlib](http://matplotlib.org/users/installing.html) and [NLopt](http://ab-initio.mit.edu/wiki/index.php/NLopt_Installation) to run.
+
+Usage example:
+
+```python
+# load `heart' dataset from mldata.org
+heart = fetch_mldata("heart")
+X = heart.data
+ytrue = np.copy(heart.target)
+ytrue[ytrue==-1]=0
+
+# label a few points 
+labeled_N = 2
+ys = np.array([-1]*len(ytrue)) # -1 denotes unlabeled point
+random_labeled_points = random.sample(np.where(ytrue == 0)[0], labeled_N/2)+\
+                        random.sample(np.where(ytrue == 1)[0], labeled_N/2)
+ys[random_labeled_points] = ytrue[random_labeled_points]
+
+# supervised score
+basemodel = SGDClassifier(loss='log', penalty='l1') # scikit logistic regression
+basemodel.fit(X[random_labeled_points, :], ys[random_labeled_points])
+print "supervised score", basemodel.score(X, ytrue)
+
+# semi-supervised score (base model has to be able to take weighted samples)
+ssmodel = CPLELearningModel(basemodel)
+ssmodel.fit(X, ys)
+print "semi-supervised score", ssmodel.score(X, ytrue)
+
+# supervised score 0.418518518519
+# semi-supervised score 0.555555555556
+```
+
 
 Examples
 ===============
