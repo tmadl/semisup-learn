@@ -74,10 +74,10 @@ pessimistic assumption) provides increased accuracy.
 Quadratic Discriminant Analysis (from left to right: supervised QDA, Self learning QDA, pessimistic CPLE QDA) 
 ![Comparison of supervised QDA with CPLE QDA](qdaexample.png)
 
-Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), pessimistic CPLE QDA)
+Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), pessimistic CPLE SVM)
 ![Comparison of supervised SVM, S3VM, and CPLE SVM](svmexample1.png)
  
-Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), pessimistic CPLE QDA)
+Support Vector Machine (from left to right: supervised SVM, S3VM [(Gieseke et al., 2012)](http://www.sciencedirect.com/science/article/pii/S0925231213003706), pessimistic CPLE SVM)
 ![Comparison of supervised SVM, S3VM, and CPLE SVM](svmexample2.png)
 
 Motivation
