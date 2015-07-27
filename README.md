@@ -26,6 +26,8 @@ The advantages of the CPLE framework compared to other semi-supervised learning 
 
 The main disadvantage is high computational complexity.
 
+The project requires [scikit-learn](http://scikit-learn.org/stable/install.html), [matplotlib](http://matplotlib.org/users/installing.html) and [NLopt](http://ab-initio.mit.edu/wiki/index.php/NLopt_Installation) to run.
+
 Examples
 ===============
 
