@@ -89,8 +89,7 @@ assumptions are violated (e.g. low density assumption, clustering assumption). I
 [(Loog, 2015)](http://arxiv.org/abs/1503.00269) has suggested an elegant framework (called Contrastive Pessimistic Likelihood Estimation / CPLE) which 
 **only uses assumptions intrinsic to the chosen classifier**, and thus allows choosing likelihood-based classifiers which fit the domain / data 
 distribution at hand, and can work even if some of the assumptions mentioned above are violated. The idea is to pessimistically assign soft labels 
-to the unlabelled data, such that the improvement over the supervised version is minimal (i.e. assume the worst case for the unknown labels); 
-and at the same time maximize log likelihood over labelled data. 
+to the unlabelled data, such that the improvement over the supervised version is minimal (i.e. assume the worst case for the unknown labels).
 
 The parameters in CPLE can be estimated according to:
 ![CPLE Equation](eq1.png)
@@ -105,7 +104,7 @@ estimates (such probability estimates can also be provided by [Platt scaling](ht
 is included to make the approach work with classifiers not supporting instance weighting).
 
 In order to make the approach work with any classifier, the discriminative likelihood (DL) is used instead of the generative likelihood, which is the first major difference to (Loog, 2015). The second 
-difference is that only the unlabelled data is included in the first term of the minimization objective below, which leads to pessimistic minimization of the DL over the unlabelled data, but maximization
+difference is that only the unlabelled data is included in the first term of the minimization objective (point 2. below), which leads to pessimistic minimization of the DL over the unlabelled data, but maximization
 of the DL over the labelled data. 
 
 ![CPLE Equation](alg1.png)
