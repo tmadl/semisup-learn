@@ -7,7 +7,7 @@ learning, made compatible with scikit-learn, including
 - **Contrastive Pessimistic Likelihood Estimation (CPLE)** (based on - but not equivalent to - [Loog, 2015](http://arxiv.org/abs/1503.00269)), a `safe' framework applicable for all classifiers which can yield prediction probabilities
 (safe here means that the model trained on both labelled and unlabelled data should not be worse than models trained only on the labelled data)
 
-- Self learning (self training), a naive semi-supervised learning framework applicable for any classifier
+- Self learning (self training), a naive semi-supervised learning framework applicable for any classifier (iteratively labelling the unlabelled instances using a trained classifier, and then re-training it on the resulting dataset - see e.g. http://pages.cs.wisc.edu/~jerryzhu/pub/sslicml07.pdf )
 
 - Semi-Supervised Support Vector Machine (S3VM) - a simple scikit-learn compatible wrapper for the QN-S3VM code developed by 
 Fabian Gieseke, Antti Airola, Tapio Pahikkala, Oliver Kramer (see http://www.fabiangieseke.de/index.php/code/qns3vm ) 
