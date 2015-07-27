@@ -18,7 +18,7 @@ The first method is a novel extension of [Loog, 2015](http://arxiv.org/abs/1503.
  
 The advantages of the CPLE framework compared to other semi-supervised learning approaches include  
 
-- it is a **generally applicable framework (works with most scikit-learn classifiers)**
+- it is a **generally applicable framework (works with scikit-learn classifiers which allow per-sample weights)**
 
 - it needs low memory (as opposed to e.g. Label Spreading which needs O(n^2)), and 
 
