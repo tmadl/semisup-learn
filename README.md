@@ -117,7 +117,7 @@ is included to make the approach work with classifiers not supporting instance w
 
 In order to make the approach work with any classifier, the discriminative likelihood (DL) is used instead of the generative likelihood, which is the first major difference to (Loog, 2015). The second 
 difference is that only the unlabelled data is included in the first term of the minimization objective (point 2. below), which leads to pessimistic minimization of the DL over the unlabelled data, but maximization
-of the DL over the labelled data. 
+of the DL over the labelled data. (Note that the DL is equivalent to the negative log loss for binary classifiers with probabilistic predictions - see below.) 
 
 ![CPLE Equation](alg1.png)
 
