@@ -53,6 +53,13 @@ class CPLELearningModel(BaseEstimator):
         solution will not be worse than a model trained on the purely 
         supervised instances)
         
+    predict_from_probabilities : boolean, optional (default=False)
+        The prediction is calculated from the probabilities if this is True 
+        (1 if more likely than the mean predicted probability or 0 otherwise).
+        If it is false, the normal base model predictions are used.
+        This only affects the predict function. Warning: only set to true if 
+        predict will be called with a substantial number of data points
+        
     use_sample_weighting : boolean, optional (default=True)
         Whether to use sample weights (soft labels) for the unlabeled instances.
         Setting this to False allows the use of base classifiers which do not
@@ -67,9 +74,10 @@ class CPLELearningModel(BaseEstimator):
 
     """
     
-    def __init__(self, basemodel, pessimistic=True, use_sample_weighting = True, max_iter=3000, verbose = 1):
+    def __init__(self, basemodel, pessimistic=True, predict_from_probabilities = False, use_sample_weighting = True, max_iter=3000, verbose = 1):
         self.model = basemodel
         self.pessimistic = pessimistic
+        self.predict_from_probabilities = predict_from_probabilities
         self.use_sample_weighting = use_sample_weighting
         self.max_iter = max_iter
         self.verbose = verbose
@@ -78,7 +86,7 @@ class CPLELearningModel(BaseEstimator):
         self.noimprovementsince = 0 # log likelihood hasn't improved since this number of iterations
         self.maxnoimprovementsince = 3 # threshold for iterations without improvements (convergence is assumed when this is reached)
         
-        self.buffersize = 200
+        self.buffersize = 100
         # buffer for the last few discriminative likelihoods (used to check for convergence)
         self.lastdls = [0]*self.buffersize
         
@@ -246,8 +254,11 @@ class CPLELearningModel(BaseEstimator):
             Class labels for samples in X.
         """
         
-        P = self.predict_proba(X)
-        return (P[:, 0]<numpy.average(P[:, 0]))
+        if self.predict_from_probabilities:
+            P = self.predict_proba(X)
+            return (P[:, 0]<numpy.average(P[:, 0]))
+        else:
+            return self.model.predict(X)
     
     def score(self, X, y, sample_weight=None):
         return sklearn.metrics.accuracy_score(y, self.predict(X), sample_weight=sample_weight)

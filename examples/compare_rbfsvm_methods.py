@@ -55,11 +55,11 @@ for i in range(4):
             model = scikitTSVM.SKTSVM(kernel=kernel)
         elif i == 2:
             lbl = "CPLE(pessimistic) SVM:"
-            model = CPLELearningModel(sklearn.svm.SVC(kernel=kernel, probability=True))
+            model = CPLELearningModel(sklearn.svm.SVC(kernel=kernel, probability=True), predict_from_probabilities=True)
         elif i == 3:
             lbl = "CPLE(optimistic) SVM:"
             CPLELearningModel.pessimistic = False
-            model = CPLELearningModel(sklearn.svm.SVC(kernel=kernel, probability=True))
+            model = CPLELearningModel(sklearn.svm.SVC(kernel=kernel, probability=True), predict_from_probabilities=True)
         model.fit(Xs, ys.astype(int))
     print ""
     print lbl
