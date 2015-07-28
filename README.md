@@ -24,7 +24,7 @@ The advantages of the CPLE framework compared to other semi-supervised learning 
 
 - it makes no additional assumptions except for the ones made by the choice of classifier 
 
-The main disadvantage is high computational complexity.
+The main disadvantage is high computational complexity. Note: this is an early stage research project, and work in progress. 
 
 Usage
 ===============

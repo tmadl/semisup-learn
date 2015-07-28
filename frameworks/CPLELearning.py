@@ -86,7 +86,7 @@ class CPLELearningModel(BaseEstimator):
         self.noimprovementsince = 0 # log likelihood hasn't improved since this number of iterations
         self.maxnoimprovementsince = 3 # threshold for iterations without improvements (convergence is assumed when this is reached)
         
-        self.buffersize = 100
+        self.buffersize = 200
         # buffer for the last few discriminative likelihoods (used to check for convergence)
         self.lastdls = [0]*self.buffersize
         

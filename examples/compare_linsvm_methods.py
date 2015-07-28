@@ -13,10 +13,10 @@ kernel = "linear"
 # number of data points
 N = 60
 supevised_data_points = 2
-noise_probability = 0.3
+noise_probability = 0.1
 
-# generate data
-cov = [[0.1, 0], [0, 0.1]]
+# generate data-
+cov = [[0.5, 0], [0, 0.5]]
 Xs = np.random.multivariate_normal([0.5,0.5], cov, (N,))
 ytrue = []
 for i in range(N):
@@ -33,10 +33,9 @@ ys[sidx] = ytrue[sidx]
 
 Xsupervised = Xs[ys!=-1, :]
 ysupervised = ys[ys!=-1]
-
+    
 plt.figure()
 cols = [np.array([1,0,0]),np.array([0,1,0])] # colors
-
 # loop through and compare methods     
 for i in range(4):
     plt.subplot(2,2,i+1)
@@ -83,10 +82,7 @@ for i in range(4):
     
     # plot decision boundary
     try:
-        if i == 0:
-            plt.contour((np.sum(Xfull, axis=1)<1).reshape((gridsize, gridsize)), extent=(minx, maxx, miny, maxy), origin='lower')
-        else:
-            plt.contour(model.predict(Xfull).reshape((gridsize, gridsize)), extent=(minx, maxx, miny, maxy), origin='lower')
+        plt.contour(model.predict(Xfull).reshape((gridsize, gridsize)), extent=(minx, maxx, miny, maxy), origin='lower')
     except:
         print "contour failed"
     
