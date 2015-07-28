@@ -140,7 +140,8 @@ class CPLELearningModel(BaseEstimator):
             _, prob = scipy.stats.ttest_ind(self.lastdls[(len(self.lastdls)/2):], self.lastdls[:(len(self.lastdls)/2)])
             
             # if improvement is not certain accoring to t-test...
-            if prob > 0.1 and numpy.mean(self.lastdls[(len(self.lastdls)/2):]) < numpy.mean(self.lastdls[:(len(self.lastdls)/2)]):
+            noimprovement = prob > 0.1 and numpy.mean(self.lastdls[(len(self.lastdls)/2):]) < numpy.mean(self.lastdls[:(len(self.lastdls)/2)])
+            if noimprovement:
                 self.noimprovementsince += 1
                 if self.noimprovementsince >= self.maxnoimprovementsince:
                     # no improvement since a while - converged; exit
@@ -152,7 +153,7 @@ class CPLELearningModel(BaseEstimator):
             if self.verbose == 2:
                 print self.id,self.it, labeledprobsum, unlabeledprobsum, dl, numpy.mean(self.lastdls), improvement, round(prob, 3), (prob < 0.1)
             elif self.verbose:
-                sys.stdout.write(('p' if self.pessimistic else 'o') if prob < 0.1 else 'n')
+                sys.stdout.write(('.' if self.pessimistic else '.') if not noimprovement else 'n')
                       
         if dl < self.bestdl:
             self.bestdl = dl

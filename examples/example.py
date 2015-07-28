@@ -3,6 +3,7 @@ import random
 from frameworks.CPLELearning import CPLELearningModel
 from sklearn.datasets.mldata import fetch_mldata
 from sklearn.linear_model.stochastic_gradient import SGDClassifier
+import sklearn.svm
 from methods.scikitWQDA import WQDA
 
 # load data
@@ -22,12 +23,19 @@ ys[random_labeled_points] = ytrue[random_labeled_points]
 #basemodel = WQDA() # weighted Quadratic Discriminant Analysis
 basemodel = SGDClassifier(loss='log', penalty='l1') # scikit logistic regression
 basemodel.fit(X[random_labeled_points, :], ys[random_labeled_points])
-print "supervised score", basemodel.score(X, ytrue)
+print "supervised log.reg. score", basemodel.score(X, ytrue)
 
 # semi-supervised score (base model has to be able to take weighted samples)
 ssmodel = CPLELearningModel(basemodel)
 ssmodel.fit(X, ys)
-print "semi-supervised score", ssmodel.score(X, ytrue)
+print "semi-supervised log.reg. score", ssmodel.score(X, ytrue)
 
-# supervised score 0.418518518519
-# semi-supervised score 0.555555555556
+# semi-supervised score, WQDA model
+ssmodel = CPLELearningModel(WQDA(), predict_from_probabilities=True) # weighted Quadratic Discriminant Analysis
+ssmodel.fit(X, ys)
+print "semi-supervised WQDA score", ssmodel.score(X, ytrue)
+
+# semi-supervised score, RBF SVM model
+ssmodel = CPLELearningModel(sklearn.svm.SVC(kernel="rbf", probability=True), predict_from_probabilities=False) # RBF SVM
+ssmodel.fit(X, ys)
+print "semi-supervised RBF SVM score", ssmodel.score(X, ytrue)

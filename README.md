@@ -50,15 +50,21 @@ ys[random_labeled_points] = ytrue[random_labeled_points]
 # supervised score
 basemodel = SGDClassifier(loss='log', penalty='l1') # scikit logistic regression
 basemodel.fit(X[random_labeled_points, :], ys[random_labeled_points])
-print "supervised score", basemodel.score(X, ytrue)
+print "supervised log.reg. score", basemodel.score(X, ytrue)
 
 # semi-supervised score (base model has to be able to take weighted samples)
 ssmodel = CPLELearningModel(basemodel)
 ssmodel.fit(X, ys)
-print "semi-supervised score", ssmodel.score(X, ytrue)
+print "semi-supervised log.reg. score", ssmodel.score(X, ytrue)
 
-# supervised score 0.418518518519
-# semi-supervised score 0.555555555556
+# semi-supervised score, RBF SVM model
+ssmodel = CPLELearningModel(sklearn.svm.SVC(kernel="rbf", probability=True), predict_from_probabilities=True) # RBF SVM
+ssmodel.fit(X, ys)
+print "semi-supervised RBF SVM score", ssmodel.score(X, ytrue)
+
+# supervised log.reg. score 0.418518518519
+# semi-supervised log.reg. score 0.555555555556
+# semi-supervised RBF SVM score 0.537037037037
 ```
 
 
