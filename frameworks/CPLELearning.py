@@ -98,9 +98,6 @@ class CPLELearningModel(BaseEstimator):
         self.id = str(unichr(numpy.random.randint(26)+97))+str(unichr(numpy.random.randint(26)+97))
 
     def discriminative_likelihood(self, model, labeledData, labeledy = None, unlabeledData = None, unlabeledWeights = None, unlabeledlambda = 1, gradient=[], alpha = 0.01):
-        if self.it == 0:
-            self.lastdls = [0]*self.buffersize
-            
         unlabeledy = (unlabeledWeights[:, 0]<0.5)*1
         uweights = numpy.copy(unlabeledWeights[:, 0]) # large prob. for k=0 instances, small prob. for k=1 instances 
         uweights[unlabeledy==1] = 1-uweights[unlabeledy==1] # subtract from 1 for k=1 instances to reflect confidence
@@ -130,6 +127,14 @@ class CPLELearningModel(BaseEstimator):
             unlabeledP = model.predict_proba(unlabeledData)
         
         dl = (1 if self.pessimistic else -1) * unlabeledlambda * unlabeledprobsum - labeledprobsum
+        return dl
+    
+        
+    def discriminative_likelihood_objective(self, model, labeledData, labeledy = None, unlabeledData = None, unlabeledWeights = None, unlabeledlambda = 1, gradient=[], alpha = 0.01):
+        if self.it == 0:
+            self.lastdls = [0]*self.buffersize
+        
+        dl = self.discriminative_likelihood(model, labeledData, labeledy, unlabeledData, unlabeledWeights, unlabeledlambda, gradient, alpha)
         
         self.it += 1
         self.lastdls[numpy.mod(self.it, len(self.lastdls))] = dl
@@ -146,12 +151,12 @@ class CPLELearningModel(BaseEstimator):
                 if self.noimprovementsince >= self.maxnoimprovementsince:
                     # no improvement since a while - converged; exit
                     self.noimprovementsince = 0
-                    raise Exception(" converged.")
+                    raise Exception(" converged.") # we need to raise an exception to get NLopt to stop before exceeding the iteration budget
             else:
                 self.noimprovementsince = 0
             
             if self.verbose == 2:
-                print self.id,self.it, labeledprobsum, unlabeledprobsum, dl, numpy.mean(self.lastdls), improvement, round(prob, 3), (prob < 0.1)
+                print self.id,self.it, dl, numpy.mean(self.lastdls), improvement, round(prob, 3), (prob < 0.1)
             elif self.verbose:
                 sys.stdout.write(('.' if self.pessimistic else '.') if not noimprovement else 'n')
                       
@@ -176,7 +181,7 @@ class CPLELearningModel(BaseEstimator):
         #re-train, labeling unlabeled instances pessimistically
         
         # pessimistic soft labels ('weights') q for unlabelled points, q=P(k=0|Xu)
-        f = lambda softlabels, grad=[]: self.discriminative_likelihood(self.model, labeledX, labeledy=labeledy, unlabeledData=unlabeledX, unlabeledWeights=numpy.vstack((softlabels, 1-softlabels)).T, gradient=grad) #- supLL
+        f = lambda softlabels, grad=[]: self.discriminative_likelihood_objective(self.model, labeledX, labeledy=labeledy, unlabeledData=unlabeledX, unlabeledWeights=numpy.vstack((softlabels, 1-softlabels)).T, gradient=grad) #- supLL
         lblinit = numpy.random.random(len(unlabeledy))
 
         try:
