@@ -103,32 +103,43 @@ class CPLELearningModel(BaseEstimator):
         uweights[unlabeledy==1] = 1-uweights[unlabeledy==1] # subtract from 1 for k=1 instances to reflect confidence
         weights = numpy.hstack((numpy.ones(len(labeledy)), uweights))
         labels = numpy.hstack((labeledy, unlabeledy))
+        
+        # fit model on supervised data
         if self.use_sample_weighting:
             model.fit(numpy.vstack((labeledData, unlabeledData)), labels, sample_weight=weights)
         else:
             model.fit(numpy.vstack((labeledData, unlabeledData)), labels)
         
+        # probability of labeled data
         P = model.predict_proba(labeledData)
         
         try:
-            labeledprobsum = -sklearn.metrics.log_loss(labeledy, P)
+            # labeled discriminative log likelihood
+            labeledDL = -sklearn.metrics.log_loss(labeledy, P)
         except Exception, e:
             print e
             P = model.predict_proba(labeledData)
 
+        # probability of unlabeled data
         unlabeledP = model.predict_proba(unlabeledData)  
            
         try:
+            # unlabeled discriminative log likelihood
             eps = 1e-15
             unlabeledP = numpy.clip(unlabeledP, eps, 1 - eps)
-            unlabeledprobsum = numpy.average((unlabeledWeights*numpy.vstack((1-unlabeledy, unlabeledy)).T*numpy.log(unlabeledP)).sum(axis=1))
+            unlabeledDL = numpy.average((unlabeledWeights*numpy.vstack((1-unlabeledy, unlabeledy)).T*numpy.log(unlabeledP)).sum(axis=1))
         except Exception, e:
             print e
             unlabeledP = model.predict_proba(unlabeledData)
         
-        dl = (1 if self.pessimistic else -1) * unlabeledlambda * unlabeledprobsum - labeledprobsum
+        if self.pessimistic:
+            # pessimistic: minimize the difference between unlabeled and labeled discriminative likelihood (assume worst case for unknown true labels)
+            dl = unlabeledlambda * unlabeledDL - labeledDL
+        else: 
+            # optimistic: minimize negative total discriminative likelihood (i.e. maximize likelihood) 
+            dl = - unlabeledlambda * unlabeledDL - labeledDL
+        
         return dl
-    
         
     def discriminative_likelihood_objective(self, model, labeledData, labeledy = None, unlabeledData = None, unlabeledWeights = None, unlabeledlambda = 1, gradient=[], alpha = 0.01):
         if self.it == 0:
