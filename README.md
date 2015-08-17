@@ -24,7 +24,17 @@ The advantages of the CPLE framework compared to other semi-supervised learning 
 
 - it makes no additional assumptions except for the ones made by the choice of classifier 
 
-The main disadvantage is high computational complexity. Note: this is an early stage research project, and work in progress. 
+The main disadvantage is high computational complexity. Note: **this is an early stage research project, and work in progress** (it is by no means efficient or well tested)!
+
+If you need faster results, try the Self Learning framework (which is a naive approach but much faster):
+
+```python
+from frameworks.SelfLearning import *
+
+any_scikitlearn_classifier = SVC()
+ssmodel = SelfLearningModel(any_scikitlearn_classifier)
+ssmodel.fit(X, y)
+```
 
 Usage
 ===============
