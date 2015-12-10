@@ -77,10 +77,10 @@ ssmodel = CPLELearningModel(sklearn.svm.SVC(kernel="rbf", probability=True), pre
 ssmodel.fit(X, ys)
 print "CPLE semi-supervised RBF SVM score", ssmodel.score(X, ytrue)
 
-# supervised log.reg. score 0.418518518519
-# self-learning log.reg. score 0.444444444444
-# semi-supervised log.reg. score 0.555555555556
-# semi-supervised RBF SVM score 0.537037037037
+# supervised log.reg. score 0.410256410256
+# self-learning log.reg. score 0.461538461538
+# semi-supervised log.reg. score 0.615384615385
+# semi-supervised RBF SVM score 0.769230769231
 ```
 
 
