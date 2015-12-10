@@ -44,14 +44,14 @@ The project requires [scikit-learn](http://scikit-learn.org/stable/install.html)
 Usage example:
 
 ```python
-# load `heart' dataset from mldata.org
-heart = fetch_mldata("heart")
-X = heart.data
-ytrue = np.copy(heart.target)
-ytrue[ytrue==-1]=0
+# load `Lung cancer' dataset from mldata.org
+cancer = fetch_mldata("Lung cancer (Ontario)")
+X = cancer.target.T
+ytrue = np.copy(cancer.data).flatten()
+ytrue[ytrue>0]=1
 
 # label a few points 
-labeled_N = 2
+labeled_N = 4
 ys = np.array([-1]*len(ytrue)) # -1 denotes unlabeled point
 random_labeled_points = random.sample(np.where(ytrue == 0)[0], labeled_N/2)+\
                         random.sample(np.where(ytrue == 1)[0], labeled_N/2)
