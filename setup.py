@@ -7,7 +7,7 @@ except ImportError:
     from distutils.core import setup
 
 requirements = [
-    "sklearn",
+    "scikit-learn",
     "scipy",
     "numpy",
     "matplotlib"
