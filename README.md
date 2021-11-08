@@ -106,7 +106,7 @@ Motivation
 ===============
 
 Current semi-supervised learning approaches require strong assumptions, and perform badly if those 
-assumptions are violated (e.g. low density assumption, clustering assumption). In some cases, they can perform worse than a supervised classifier trained only on the labeled exampels. Furthermore, the vast majority require O(N^2) memory.  
+assumptions are violated (e.g. low density assumption, clustering assumption). In some cases, they can perform worse than a supervised classifier trained only on the labeled examples. Furthermore, the vast majority require O(N^2) memory.  
 
 [(Loog, 2015)](http://arxiv.org/abs/1503.00269) has suggested an elegant framework (called Contrastive Pessimistic Likelihood Estimation / CPLE) which 
 **only uses assumptions intrinsic to the chosen classifier**, and thus allows choosing likelihood-based classifiers which fit the domain / data 
